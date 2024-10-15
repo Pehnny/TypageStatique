@@ -1,0 +1,57 @@
+# Langages de programmation au typage statique
+
+- [Introduction](#introduction)
+- [Typage statique](#typage-statique)
+    - [Types primitifs et types références]()
+        - [Types primitifs]()
+        - [Types références]()
+    - [Programmation générique]()
+    - [Duck Typing]()
+        - [Héritage]()
+        - [Polymorphisme]()
+- [Conclusion]()
+
+## Introduction
+
+Depuis le début de la formation, nous travaillons avec **JavaScript**. **JavaScript** est un langage au typage dynamique au même titre que **Python**, ce qui signifie qu'une variable déclarée n'a pas de type attribué. A titre d'exemple, le code suivant est valide :
+
+```js
+//  JS
+let variable = 1;
+variable = "text";
+//  "text"
+```
+
+Ce qui n'est pas le cas dans les langages au typage statique. Prenons le même code en **C#** à titre d'exemple :
+
+```c#
+//  C#
+int variable = 1;
+variable = "text";
+//  error CS0029: Impossible de convertir implicitement le type 'string' en 'int'
+```
+
+Vous constaterez que la déclaration de `variable` se fait avec le mot clef `int` plutôt que `let`, associant la variable au type correspondant. La syntaxe `type <nom>` pour déclarer une variable dans les langages statiques est considéré comme une vieille syntaxe aujourd'hui. On la retrouve sur des langages comme **C++**, **C#** ou **Java**. Les langages plus moderne comme **Kotlin** et **Rust** utilisent la syntaxe `keyword <nom> : type`. Par exemple :
+
+```rust
+//  Rust
+let variable : i32 = 1;
+```
+
+Les langages modernes ainsi que les versions récentes de vieux langages sont capables d'inférer le type d'une variable selon le contexte. On peut donc simplifier le code précédent :
+
+```rust
+//  Rust
+let variable = 1;
+```
+
+Ainsi, **C#** et **Java** ont adopté le mot clef `var` à une étape de leur développement.
+
+*Notez que les langages typés statiquement utilisent des stratégies issues de la programmation orientée objet pour reproduire la flexibilité du typage dynamique de manière plus contrôlée. Nous allons revenir là-dessus par la suite.*
+
+## Typage statique
+
+Penchons nous plus en détail sur les différences entre typage dynamique et statique. Dans l'[introduction](#introduction), nous avons vu le cas de la déclaration d'une variable. Or, les effets du typage statique se font ressentir dans la création de classes et de fonctions. Afin de constater les différences, je propose de comparer la déclation d'une fonction `somme()` en **JavaScript** et en **Rust**.
+
+- [javascript/somme](./javascript/somme.js)
+- [rust/somme](./rust/techtalk/src/examples/somme.rs)
