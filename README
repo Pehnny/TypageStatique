@@ -2,56 +2,120 @@
 
 - [Introduction](#introduction)
 - [Typage statique](#typage-statique)
-    - [Types primitifs et types références]()
-        - [Types primitifs]()
-        - [Types références]()
-    - [Programmation générique]()
+    - [Fonctions et classes](#fonctions-et-classes)
+    - [Programmation générique](#programmation-générique)
     - [Duck Typing]()
         - [Héritage]()
         - [Polymorphisme]()
+    - [TypeScript]()
 - [Conclusion]()
 
 ## Introduction
 
-Depuis le début de la formation, nous travaillons avec **JavaScript**. **JavaScript** est un langage au typage dynamique au même titre que **Python**, ce qui signifie qu'une variable déclarée n'a pas de type attribué. A titre d'exemple, le code suivant est valide :
+Ce repo s'addresse aux développeurs qui n'ont connu que des langages au typage dynamique. Ici, nous nous intéresserons à **JavaScript**, mais il n'est pas le seul langage populaire à présenter cette caractéristique. Un exemple notable est **Python**. 
+
+La spécificité d'un langage au typage dynamique est que le type d'une variable peut changer à n'importe quel moment. Ce concept peut vous paraître abstrait puisque, du point de vue d'un développeur **JavaScript**, le concept de type n'existe pas. Pour vous aider à comprendre de quoi il retourne, regardons comment une variable est déclarée dans des langages au typage dynamique et statique en commençant par **JavaScript** :
 
 ```js
 //  JS
 let variable = 1;
 variable = "text";
-//  "text"
 ```
 
-Ce qui n'est pas le cas dans les langages au typage statique. Prenons le même code en **C#** à titre d'exemple :
+Si nous affichions la valeur de `variable` dans le terminal, nous lirions :
+
+```sh
+text
+```
+
+Regardons le même code en **C#** :
 
 ```c#
 //  C#
 int variable = 1;
 variable = "text";
-//  error CS0029: Impossible de convertir implicitement le type 'string' en 'int'
 ```
 
-Vous constaterez que la déclaration de `variable` se fait avec le mot clef `int` plutôt que `let`, associant la variable au type correspondant. La syntaxe `type <nom>` pour déclarer une variable dans les langages statiques est considéré comme une vieille syntaxe aujourd'hui. On la retrouve sur des langages comme **C++**, **C#** ou **Java**. Les langages plus moderne comme **Kotlin** et **Rust** utilisent la syntaxe `keyword <nom> : type`. Par exemple :
+Vous pouvez constater que la déclaration de `variable` contient le mot clef `int` plutôt que `let`. Autrement dit, `variable` est une variable de type `int` (nombre entier). Si nous essayions d'afficher la valeur de `variable` comme à l'exemple précédent, nous n'y arriverions pas car le code ne compilarai pas :
+
+```sh
+error CS0029: Impossible de convertir implicitement le type 'string' en 'int'
+```
+
+*Faisons une brève digression pour souligner que **JavaScript** et **C#** ont une autre différence majeure que leur système de type : **JavaScript** est un langage interprêté tandis que **C#** est un langage compilé. Cette autre différence a autant d'importance et mérite un repo à part entière !*
+
+La syntaxe `type <name>` est considéré comme une vieille syntaxe aujourd'hui. Elle est présente sur des langages comme **C++**, **C#** ou **Java**. Les langages modernes comme **Kotlin** et **Rust** utilisent une syntaxe ressemblant à `keyword <name> : type` :
 
 ```rust
 //  Rust
 let variable : i32 = 1;
 ```
 
-Les langages modernes ainsi que les versions récentes de vieux langages sont capables d'inférer le type d'une variable selon le contexte. On peut donc simplifier le code précédent :
+Voilà une syntaxe qui ne vous dépaysera pas ! Histoire de vous éviter un peu plus le mal du pays, ces langages modernes intègrent la capacité d'inférer le type d'une variable selon le contexte de son allocation. Dit plus simplement, il n'est pas toujours (ça dépend du contexte) nécessaire de préciser le type de la variable :
 
 ```rust
 //  Rust
 let variable = 1;
 ```
 
-Ainsi, **C#** et **Java** ont adopté le mot clef `var` à une étape de leur développement.
+Cette approche semble tellement évidente que les plus vieux langages comme **C#** et **Java** ont également adopté un mot clef à un moment donné de leur histoire. En l'occurrence, les deux ont opté pour `var`. Malheureusement, quand il n'est pas possible d'inférer le type d'une variable, il faut revenir à la vieille syntaxe. Vous m'accorderez que c'est moins élégant que de rajouter `: type` !
 
-*Notez que les langages typés statiquement utilisent des stratégies issues de la programmation orientée objet pour reproduire la flexibilité du typage dynamique de manière plus contrôlée. Nous allons revenir là-dessus par la suite.*
+*A ce stade, vous vous dites sans doute que le typage statique impose des contraintes fortes. C'est l'idée, et nous verrons par la suite quelles en sont les bénéfices, mais aussi comment apporter de la flexibilité à tout ça.*
 
 ## Typage statique
 
-Penchons nous plus en détail sur les différences entre typage dynamique et statique. Dans l'[introduction](#introduction), nous avons vu le cas de la déclaration d'une variable. Or, les effets du typage statique se font ressentir dans la création de classes et de fonctions. Afin de constater les différences, je propose de comparer la déclation d'une fonction `somme()` en **JavaScript** et en **Rust**.
+### Fonctions et classes
+
+Dans l'[introduction](#introduction), nous avons vu le cas des déclarations et allocations de variables. Toutefois, l'intérêt du typage statique se situe au niveau des classes et des fonctions. Commençons par regarder comment construire une fonction qui additionne 2 nombres entiers en **JavaScript** et en **Rust**.
 
 - [javascript/somme](./javascript/somme.js)
 - [rust/somme](./rust/techtalk/src/examples/somme.rs)
+
+Vous remarquerez que dans l'exemple en **Rust**, le type des arguments `a` et `b`, ainsi que le type de retour, noté `-> type` sont précisés. En l'occurrence, il s'agit du type `i32`, c'est-à-dire un nombre entier de taille 32 bits.
+
+*Faisons à nouveau une digression. Par rapport à la plus part des langages cités jusqu'à présent, **Rust** est un langage de bas niveau. Nous n'entrerons pas non plus dans les détails pour les mêmes raisons qu'à la digression précédente. Sachez juste qu'en **Rust**, comme en **C++**, les types associés aux nombres peuvent occuper plusieurs tailles dans la mémoire de l'ordinateur. Ainsi, en **Rust**, les nombres entiers sont représentés par les types `i8`, `i16`, `i32`, ...*
+
+Le fait de préciser les types des arguments et du retour d'une fonction a un impact majeur sur ce qu'il est possible de faire avec cette fonction. Prenons d'abord la fonction `somme()` en **JavaScript**. Même si celle-ci est pensée pour additionner 2 nombres entiers, rien ne vous empêche de l'utiliser pour concaténer deux chaines de caractères :
+
+```js
+//  JS
+somme("une chaine", "de caractère")
+```
+
+Sans surprise, afficher le résultat de cette fonctione donne :
+
+```sh
+une chaine de caractère
+```
+
+En revanche, si nous essayons d'utiliser la fonction `somme()` en **Rust** sur autre chose que des nombres entiers de taille 32 bits, le compilateur nous renvoit l'erreur suivante :
+
+```sh
+error[E0308]: arguments to this function are incorrect
+```
+
+Tout ce que nous venons de dire reste valable pour une classe, ses attributs et ses méthodes. Définissons une classe simple, en **C#**, qui possède deux attributs, `name` et `validity` :
+
+```c#
+//  C#
+class Example
+{
+    private string name;
+    private bool validity;
+
+    //  Constructeur
+    public Example(string name, bool validity)
+    {
+        this.name = name;
+        this.validity = validity;
+    }
+}
+```
+
+Lors de la création d'une classe, il est nécessaire de préciser le type de chaque attribut. Dés lors, toute tentative d'instancier la classe `Example` avec des types de `name` et `validity` différents de `string` et `bool` respectivement générera une erreur similaire.
+
+Parlons des bénéfices d'une telle approche. Par rapport à un langage comme **JavaScript**, un système de typage statique est indiscutablement rigide. En contrepartie de cette rigidité, ce système prévient tout un tas d'erreurs que vous avez sans doute déjà rencontré et qui, dans le cas de **JavaScript**, se manifestent par l'apparition de valeurs `undefined` un peu partout dans votre code. Une telle erreur peut arrive quand vous essayez d'utiliser une méthode de l'objet `String` sur un objet `Array`, comme la méthode `map()`. Le système de typage statique prévient cette erreur puisqu'il connait le type de chaque valeur que vous manipulez à chaque instant, exception faite des valeurs qui ne peuvent être déterminées que pendant l'exécution du programme, comme lorsque vous communiquez avec un serveur.
+
+A la fin de l'introduction, nous avons évoqué la possibilité de rendre cette approche plus flexible. Vous l'aurez peut-être senti, que devons-nous faire si nous voulons que notre fonction `somme()` fonctionne avec des nombres réels (à virgule) ? Devons-vous écrire une autre version de cette fonction ? A un époque, c'est effectivement ce qu'il fallait faire et ça devient vite pénible, vous en conviendrez. Heureusement, une technique s'est imposée au début des années 2000 : la programmation générique.
+
+### Programmation générique

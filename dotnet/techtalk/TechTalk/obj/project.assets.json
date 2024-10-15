@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\piron\\.nuget\\packages\\": {}
+    "C:\\Users\\theo_\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\piron\\Documents\\BeCode\\TechTalk\\dotnet\\techtalk\\TechTalk\\TechTalk.csproj",
+      "projectUniqueName": "D:\\Geek\\BeCode\\TechTalk-1\\dotnet\\techtalk\\TechTalk\\TechTalk.csproj",
       "projectName": "TechTalk",
-      "projectPath": "C:\\Users\\piron\\Documents\\BeCode\\TechTalk\\dotnet\\techtalk\\TechTalk\\TechTalk.csproj",
-      "packagesPath": "C:\\Users\\piron\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\piron\\Documents\\BeCode\\TechTalk\\dotnet\\techtalk\\TechTalk\\obj\\",
+      "projectPath": "D:\\Geek\\BeCode\\TechTalk-1\\dotnet\\techtalk\\TechTalk\\TechTalk.csproj",
+      "packagesPath": "C:\\Users\\theo_\\.nuget\\packages\\",
+      "outputPath": "D:\\Geek\\BeCode\\TechTalk-1\\dotnet\\techtalk\\TechTalk\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\piron\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\theo_\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -64,7 +64,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
