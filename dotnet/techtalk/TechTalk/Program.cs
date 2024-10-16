@@ -1,23 +1,13 @@
-﻿class TechTalk
+﻿using TechTalk;
+
+class Example
 {
     static void Main(string[] args)
     {
-        // types primitifs (Je ne vais pas parler de Heap et de Stack !)
-        int number = 1;
-        char character = 'a';
-        double floatingNumber = 0.4;
-        bool truefalse = false;
+        var resultInt = Somme.SumInt(2, 3);
+        var resultFloat = Somme.SumFloat(0.1, 0.2);
 
-        // types références ou objets
-        String text = "C'est un techtalk sur les langages fortement typés !";
-        int[] arrayOfInt = [1, 2, 3];
-    }
-}
-
-class Sum
-{
-    public static int SumInt(int a, int b)
-    {
-        return a + b;
+        var result1 = SommeAvecGenerique.Somme(2, 3);
+        var result2 = SommeAvecGenerique.Somme(0.1, 0.2);
     }
 }
