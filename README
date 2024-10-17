@@ -162,4 +162,45 @@ Avant de parler de la dernière partie de la déclation de notre méthode `Somme
 Cannot implicitly convert type 'string' to 'T'
 ```
 
-Vous reconnaitrez peut-être l'error que nous avons rencontré dans l'introduction. Le type générique `T` n'est pas définit explicitement mais reste un type comme les autres. Ainsi, il n'est pas possible de changer le type de `a` et de `b`.
+Vous reconnaitrez peut-être l'erreurr que nous avons rencontré dans l'introduction. Le type générique `T` n'est pas définit explicitement mais se comporte comme un type concret. Ainsi, il n'est pas possible de changer le type de `a` et de `b`.
+
+Pour ressentir toute la puissance des types génériques, regardons ce qu'il se passe quand nous [appelons cette méthode](/dotnet/techtalk/TechTalk/Program.cs). En opposition à l'approche sans générique, vous remarquerez qu'on nous utilisons bien la même fonction à 2 reprises. Dans cet exemple, nous exploitons la capacité du compilateur à inférer le type concret de `T`. Si ce n'était pas possible, nous devrions le préciser :
+
+```c#
+int result1 = SommeAvecGenerique.Somme<int>(2, 3);
+double result2 = SommeAvecGenerique.Somme<double>(0.1, 0.2);
+```
+
+C'est tout de suite plus verbeux ! Heureusement, l'inférence se fait à deux niveau :
+
+- Lors de la déclaration de `result1` et `result2`. Le type de ces variables est déduit du type concret de la méthode générique `Somme<T>`.
+- Lors de l'appel de la méthode `Somme<T>`. Le type concret de `T` est déduit des valeurs passées en arguments de la méthode.
+
+Toutes ces couches d'abstraction simplifient le travail des développeurs.
+
+Du point de vue de l'ordinateur, le compilateur défini une nouvelle méthode `Somme()` pour chaque type concret utilisés dans le programme. Ce procédé s'appelle monomorphization et il nous épargne de devoir écrire une méthode pour chaque cas de figure comme dans le [premier exemple](/dotnet/techtalk/TechTalk/Somme.cs).
+
+Revenons maintenant à la dernière partie de la déclaration de la méthode `Somme<T>()` :
+
+```c#
+where T : INumber<T>
+```
+
+Cette dernière partie sert à restreindre les types concrets que peut prendre le générique `T` à l'ensemble des classes qui implémentent l'interface `INumber`. Si vous n'êtes pas familier les concepts d'interface et d'implémentation, voyez l'interface comme une classe qui n'aurait que des méthodes sans implémentation (vide) et l'implémentation comme le fait d'hériter et de cette interface, et de l'implémenter :
+
+```c#
+//  C#
+interface IExample
+{
+    public string ExampleMethod();
+}
+class Example : IExample
+{
+    public string ExampleMethod()
+    {
+        return "example";
+    }
+}
+```
+
+Une dernière notion importante avec les types génériques est leur encapsulation. Imaginez que vous ayez besoin de construire [une classe](/dotnet/techtalk/TechTalk/Arithmetic.cs) pour encapsuler et manipuler des nombres. Plutôt que de créer une classe pour chaque type numérique, vous pouvez définir une classe générique de la même façon que nous l'avons fait avec la méthode `Somme<T>()`. Dans ce cas, vous constaterez que `C#` a besoin que vous lui donniez un type concret lors de l'instanciation de la classe `Arithmetic<T>`. Une fois que nous avons créé notre instance, le type de `T` est clairement défini pour tous les attributs et toutes les méthodes de cette instance.

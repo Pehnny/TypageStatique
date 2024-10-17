@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TechTalk")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+22b13673268d5497f1735191f6a1eac6b063f129")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6fc9c16129c0f082a6614fc8500f79b2e930d90f")]
 [assembly: System.Reflection.AssemblyProductAttribute("TechTalk")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TechTalk")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

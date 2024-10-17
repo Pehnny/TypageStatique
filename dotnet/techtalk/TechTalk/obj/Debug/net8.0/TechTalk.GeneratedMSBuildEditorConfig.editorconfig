@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = TechTalk
-build_property.ProjectDir = D:\Geek\BeCode\TechTalk\dotnet\techtalk\TechTalk\
+build_property.ProjectDir = C:\Users\piron\Documents\BeCode\TechTalk\dotnet\techtalk\TechTalk\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
