@@ -2,11 +2,11 @@ using System.Numerics;
 
 namespace TechTalk
 {
-    class Arithmetic<T> where T : INumber<T> 
+    class Arithmetique<T> where T : INumber<T> 
     {
-        private T[] numbers;
+        private List<T> numbers;
 
-        public Arithmetic(T[] numbers)
+        public Arithmetique(List<T> numbers)
         {
             this.numbers = numbers;
         }
@@ -33,6 +33,11 @@ namespace TechTalk
             }
 
             return result;
+        }
+
+        public void AddNumber(T number)
+        {
+            numbers.Add(number);
         }
     }
 }

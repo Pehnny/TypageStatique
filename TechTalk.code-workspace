@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "rust"
+		},
+		{
+			"path": "dotnet"
+		},
+		{
+			"path": "javascript"
+		}
+	],
+	"settings": {}
+}
