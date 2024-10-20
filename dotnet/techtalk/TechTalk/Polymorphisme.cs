@@ -52,26 +52,31 @@ namespace TechTalk
     }
 
     //  Polymorphisme avec héritage d'une classe avec implémentation
-    class Chien(string espece = "chien", string race = "inconnue") : Animal(espece)
+    class Chien(string race = "inconnue") : Animal("chien")
     {
+        protected string race = race;
+
         public override void Cri()
         {
             Console.WriteLine("Waf !");
         }
 
-        public void DemanderRace()
+        public virtual void DemanderRace()
         {
             Console.WriteLine(race);
         }
     }
 
-    class Golden_Retriever(string race = "golden retriever") : Chien(race)
+    class Golden_Retriever : Chien
     {
-
+        public Golden_Retriever() : base("golden retriever") 
+        {
+            
+        }
+    }
+    class Rottweiler : Chien
+    {
+        public Rottweiler() : base("rottweiler") {}
     }
 
-    class Rottweiler(string race = "rottweiler") : Chien(race)
-    {
-
-    }
 }

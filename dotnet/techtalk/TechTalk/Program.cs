@@ -7,16 +7,24 @@ class Example
         //  Typage statique et polymorphisme
         //  Héritage
         {
+            Console.WriteLine("Héritage");
+            Console.WriteLine("--------------------------");
+            
             var parent = new Parent("Parent");
             parent.DireNom();
 
             var enfant = new Enfant("Enfant", 10);
             enfant.DireNom();
             enfant.DireAge();
+
+            Console.WriteLine("");
         }
 
         //  Polymorphisme avec héritage
         {
+            Console.WriteLine("Polymorphisme avec héritage");
+            Console.WriteLine("--------------------------");
+            
             var animaux = new List<Animal>{new Canard(), new Chat()};
             foreach (var animal in animaux)
             {
@@ -34,44 +42,56 @@ class Example
             {
                 chien.DemanderRace();
             }
+
+            Console.WriteLine("");
         }
 
         //  Mutation d'animaux
         {
+            Console.WriteLine("Mutation d'animaux");
+            Console.WriteLine("--------------------------");
+            
             Animal animal = new Canard();
             animal.Cri();
             animal = new Chat();
             animal.Cri();
+
+            Console.WriteLine("");
         }
 
         //  Programmation générique
-        //  Méthode Somme() sans générique
+        //  Appel de la méthode Somme<T>()
         {
-            var resultInt = Somme.SommeInt(2, 3);
-            var resultFloat = Somme.SommeFloat(0.1, 0.2);
-            Console.WriteLine(resultInt.ToString() + "\n" + resultFloat.ToString());
-        }
-        
-        //  Méthode Somme<T>() avec générique
-        {
-            var result1 = SommeAvecGenerique.Somme(2, 3);
-            var result2 = SommeAvecGenerique.Somme(0.1, 0.2);
-            Console.WriteLine(result1.ToString() + "\n" + result2.ToString());
+            Console.WriteLine("Appel de la méthode Somme<T>()");
+            Console.WriteLine("--------------------------");
+
+            var sommeEntier = Arithmetique.Somme(2, 3);
+            var sommeReel = Arithmetique.Somme(0.1, 0.2);
+            Console.WriteLine(sommeEntier.ToString() + "\n" + sommeReel.ToString());
+            
+            Console.WriteLine("");
         }
 
-        //  Classe générique Arithmetic<T>
+        //  Classe générique Cage<T>
         {
-            var arithmeric = new Arithmetique<int>([1, 2, 3]);
-            arithmeric.AddNumber(4);
-            var somme = arithmeric.Somme();
-            Console.WriteLine(somme.ToString());
-        }
+            Console.WriteLine("Classe générique Cage<T>");
+            Console.WriteLine("--------------------------");
 
-        //  Conversion de types internes
-        {
-            int number = 0;
-            string numberString = number.ToString();
-            Console.WriteLine(numberString);
+            var golden_retriever = new Golden_Retriever();
+            var rottweiler = new Rottweiler();
+
+            var cage1 = new Cage<Golden_Retriever>(golden_retriever);
+            var cage2 = new Cage<Rottweiler>(rottweiler);
+            cage1.VerifierRace();
+            cage2.VerifierRace();
+
+            var cage3 = new Cage<Chien>(golden_retriever);
+            cage3.VerifierRace();
+            cage3.Liberer();
+            cage3.CapturerAutreChien(rottweiler);
+            cage3.VerifierRace();
+            
+            Console.WriteLine("");
         }
     }
 }

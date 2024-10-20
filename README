@@ -5,11 +5,10 @@ Le présent repo s'addresse aux développeurs qui n'ont connu que des langages a
 - [Introduction](#introduction)
 - [Typage statique](#typage-statique)
     - [Fonctions et classes](#fonctions-et-classes)
+    - [Heritage et polymorphisme](#héritage-et-polymorphisme)
+        - [Rappels](#rappels)
+        - [Typage statique et polymorphisme](#typage-statique-et-polymorphisme)
     - [Programmation générique](#programmation-générique)
-    - [Polymorphisme](#polymorphisme)
-        - [Polymorphisme à base d'héritage](#polymorphisme-à-base-dhéritage)
-        - [Polymorphisme à base de composition](#polymorphisme-à-base-de-composition)
-    - [TypeScript](#typescript)
 - [Conclusion](#conclusion)
 
 ## Introduction
@@ -142,6 +141,7 @@ En pratique, la composition diffère de l'héritage par sa plus grande modularit
 Dans ce dernier exemple, nous avons volontairement mélangé les deux approches car l'héritage et la composition ne sont pas mutuellement excluantes.
 
 #### Typage statique et polymorphisme
+---
 
 Si vous connaissiez tous les concepts que nous venons de passer en revue, vous savez qu'ils ne sont absolument pas exclusifs aux langages à système de typage statique. Toutefois, nous avons fait ces rappels pour répondre à un objectif que nous nous sommes fixé : **Reproduire la flexibilité du typage dynamique au sein des systèmes de typage statique.**
 
@@ -185,174 +185,101 @@ public static T Somme<T>(T a, T b) where T : INumber<T>
 
 Dans toutes les apparitions de `T`, la plus importante est la numéro 2. La syntaxe `<T>` signifie que nous déclarons le type générique `T` comme "paramètre de type" de la méthode `Somme<T>()`, de manière analogue que nous déclarons les paramètres (de valeur) `a` et `b`. Les `T` numéros 1, 3 et 4 prennent simplement la place d'un type concret.
 
-Avant de parler de la dernière partie de la déclation de notre méthode `Somme()`, prenons le temps de remarquer quelque chose de trivial. Puisque `T` peut incarner, a priori, n'importe quel type, nous pourrions conclure hativement que nous avons inventé le typage dynamique dans un système de typage statique. C'est évidemment faux. Afin d'expliquer pourquoi, ajoutez une ligne de code dans la [méthode `Somme<T>()`](./dotnet/techtalk/TechTalk/SommeAvecGenerique.cs) qui modifie la valeur de `a` par une chaine de caractère, ou même un nombre. Vous obtiendrez l'erreur :
-
-```sh
-Cannot implicitly convert type 'string' to 'T'
-```
-
-Vous reconnaitrez peut-être l'erreurr que nous avons rencontré dans l'introduction. Le type générique `T` n'est pas définit explicitement mais se comporte comme un type concret. Ainsi, il n'est pas possible de changer le type de `a` et de `b`.
-
-Pour ressentir toute la puissance des types génériques, regardons ce qu'il se passe quand nous [appelons cette méthode](/dotnet/techtalk/TechTalk/Program.cs). En opposition à l'approche sans générique, vous remarquerez qu'on nous utilisons bien la même fonction à 2 reprises. Dans cet exemple, nous exploitons la capacité du compilateur à inférer le type concret de `T`. Si ce n'était pas possible, nous devrions le préciser :
+Avant de nous attarder sur les deux dernières occurences de `T`, parlons déjà de comment utiliser cette méthode générique. Lorsque nous appelons la méthode `Somme<T>()`, nous devons passer un type en entrée, en plus des valeurs habituelles :
 
 ```c#
 //  C#
-int result1 = SommeAvecGenerique.Somme<int>(2, 3);
-double result2 = SommeAvecGenerique.Somme<double>(0.1, 0.2);
+int sommeEntier = Arithmetique.Somme<int>(2, 3);
+double sommeReel = Arithmetique.Somme<double>(0.2, 0.3);
 ```
 
-C'est tout de suite plus verbeux ! Heureusement, l'inférence se fait à deux niveau :
+Cette approche est différente du polymorphisme par héritage parce que même si `T` peut prendre n'importe quel type concret, une fois que nous lui avons assigné un type concret, il ne peut plus en changer dans l'appel de la méthode `Somme<T>()` en cours. Dans l'exemple ci-dessus, nous appelons la méthode `Somme<T>()` sur `int` puis sur `double`. Cependant, une fois que nous avons appelé `Somme<int>()`,  il ne nous est plus possible de traiter `T` autrement que comme un nombre entier (jusqu'à l'appel suivant). Nous ne pouvons donc pas passer un nombre décimal comme à la ligne suivante. La différencre fondamentale entre le polymorphisme de type et le polymorphisme par héritage réside là dessus.
 
-- Lors de la déclaration de `result1` et `result2`. Le type de ces variables est déduit du type concret de la méthode générique `Somme<T>`.
-- Lors de l'appel de la méthode `Somme<T>`. Le type concret de `T` est déduit des valeurs passées en paramètres de la méthode.
+Illustrons cette différence avec un autre exemple. Admettons que pour des raisons techniques, nous devons convertir tous les types numériques qui entrent dans la méthode `Somme<T>()` en type `double`. Nous ne pouvons pas le faire directement sur les paramètres de la fonction :
 
-Toutes ces couches d'abstraction simplifient le travail des développeurs.
+```c#
+public static T Somme<T>(T a, T b) where T : INumber<T>
+{
+    a = Convert.ToDouble(a);
+    return a + b;
+}
+// error CS0029: Impossible de convertir implicitement le type 'double' en 'T'
+```
 
-Du point de vue de l'ordinateur, le compilateur défini une nouvelle méthode `Somme()` pour chaque type concret utilisés dans le programme. Ce procédé s'appelle monomorphization et il nous épargne de devoir écrire une méthode pour chaque cas de figure comme dans le [premier exemple](/dotnet/techtalk/TechTalk/Somme.cs).
+Vous reconnaitrez ici l'erreur que nous avons rencontré dans l'[introduction](#introduction). Pour accomplir cette conversion, nous devons déclarer une nouvelle variable :
 
-Revenons maintenant à la dernière partie de la déclaration de la méthode `Somme<T>()` :
+```c#
+//  C#
+public static T Somme<T>(T a, T b) where T : INumber<T>
+{
+    var x = Convert.ToDouble(a);
+    return a + b;
+}
+```
+
+Toutefois, sans la dernière partie de la signature de la méthode `Somme<T>()`, nous rencontrerions une autre erreur à la ligne suivante car rien ne permet au compilateur de savoir si l'ensemble des types concrets que `T` peut incarner sont additionnables. Revenons donc sur cette dernière partie de la déclaration de notre méthode `Somme<T>()` :
 
 ```c#
 //  C#
 where T : INumber<T>
 ```
 
-Cette dernière partie sert à restreindre les types concrets que peut prendre le générique `T` à l'ensemble des classes qui implémentent l'interface `INumber`. Si vous n'êtes pas familier des concepts d'interface et d'implémentation, nous reviendrons dessus plus tard. En attendant, voyez une interface comme une classe qui n'aurait que des méthodes vides et une implémentation comme le fait d'hériter des méthodes de cette interface tout en les remplissant.
+Cette expression permet de restreindre les types concrets que peut prendre le type générique `T` à l'ensemble des types (classes) qui implémentent l'interface `INumber<T>`. Nous n'entrerons pas dans les détails de l'implémentation de cette interface, mais remarquons qu'elle est elle-même générique.
 
-Une dernière notion importante avec les types génériques est leur encapsulation. Imaginez que vous ayez besoin de construire une classe [`Arithmetic<T>`](/dotnet/techtalk/TechTalk/Arithmetique.cs) pour encapsuler et manipuler des nombres. Plutôt que de créer une classe pour chaque type numérique, vous pouvez définir une classe générique de la même façon que nous l'avons fait avec la méthode `Somme<T>()`. Toutefois, contrairement au cas de la méthode, le compilateur de `C#` n'est pas capable d'inférer le type concret de `T` à partir des valeurs passées dans le constructeur, il faut donc le préciser au moment de l'[instanciation](/dotnet/techtalk/TechTalk/Program.cs). D'autres langages en sont capable. a besoin que vous lui donnez un type concret lors de l'instanciation de la classe `Arithmetic<T>`.
+Revenons à présent sur les deux appels de la méthode `Somme<T>()`. Dans ces exemples, nous avons déclaré explicitement le type de chaque variable et de du paramètre générique passé à la méthode. Nous l'avons fait pour mieux illustrer ce qu'il se passe. Toutefois, le compilateur peut également inférer des types génériques. Nous pouvons donc simplifier les appels de notre méthode.
 
-Par soucis de simplicité, nous n'avons traité que des exemples avec un générique. Bien entendu, nous pouvons définir autant de type générique que nous en avons besoin et les mélanger avec des types concrets :
+- [dotnet/Program](/dotnet/techtalk/TechTalk/Program.cs)
+
+Faisons le point de tout ce que nous avons vu jusqu'à présent. Nous avons vu deux approches qui permettent de reproduire la flexibilité d'un système de typage dynamique. La première, **le polymorphisme par héritage**, permet de créer un ensemble de types interchangeables. Bien que cette stratégie réponde à la problématique initiale, elle reproduit également les inconvénients du typage dynamique, même si c'est mieux controlable. C'est pourquoi nous avons vu une seconde approche, **la programmation générique** (ou polymorphisme de type) qui offre également cette flexibilité d'usage, flexibilité qui nous épargne de devoir écrire une méthode `Somme()` pour chaque type existant, et garanti également une immutabilité de type qui empêche un `Chat` de devenir un `Canard`, par exemple.
+
+Concluons sur la programmation générique avec quelques exemples supplémentaires. Tout d'abord, nous pouvons écrire des classes génériques au même titre que nous avons écrit des méthodes génériques :
+
+- [dotnet/Generique](/dotnet/techtalk/TechTalk/Generique.cs)
+
+Dans cet exemple, nous définissons une classe générique `Cage<T>` dont une la méthode `CapturerAutreChien<U>()` est également générique. Attardons un peu plus sur ce que fait cette méthode :
+
+```c#
+public void CapturerAutreChien<U>(U chien) where U : T
+{
+    if (!plein)
+    {
+        this.chien = chien;
+        plein = true;
+    }
+}
+```
+
+Cette méthode prend un chien de type `U` restreint au type `T` (lui-même restreint au type `Chien`). Lorsque nous instançons la classe `Cage<T>`, nous fixons le type de chien que la cage peut accueillir. Dés lors, si nous choissons d'instancier une `Cage` sur un `Golden_Retriever`, nous ne pourrons plus capturer que des `Golden_Retriever`. Si nous voulons mettre un `Rottweiller`  en cage, deux options s'offrent à nous :
+
+1) Créer une nouvelle instance de `Cage<T>` sur le type `Rottweiller`.
+2) Assigner un type plus large à notre instance de `Cage<T>`, comme `Chien`.
+
+Cet exemple nous permet d'illustrer que les deux stratégies de polymorphisme sont compatibles.
+
+Regardon un dernier exemple. Jusqu'à présent nous n'avons traité que des cas à un seul générique par soucis de simplicité. Bien entendu, nous pouvons définir autant de paramètre générique que nous en avons besoin. Nous pouvons également les mélanger à des types concrets :
 
 ```c#
 //  C#
 class Example
 {
-    public static void ExampleMethod<T, U, V>(T arg1, U arg2, V arg3, int arg4, string arg5)
+    public static void ExampleMethod<T, U, V>(T arg1, U arg2, V arg3, int arg4, string arg5) 
+    where T : Golden_Retriever, Rottweiller 
+    where U : Cage<T>
+    where V : Vehicule
     {
         // code
     }
 }
 ```
 
-Chaque type générique peut être restreint par le mot clef `where`, et ces restrictions peuvent être différentes pour `T`, `U` et `V`. L'implémentation des types génériques varie d'un langage à l'autre. En général, les règles et la syntaxe tendent à se simplifier et offrir plus de confort au développeur avec les langages plus récents. Si le sujet vous intéresse, vous pouvez comparer les implémentations des génériques en **Java** et en **C#**.
+## Conclusion
 
-Maintenant que nous avons fait le tour du sujet des génériques et expliqué comment ils permettent d'épargner énormément de répétabilité dans le code, posons nous une dernière question. **Comment fait-on si nous avons besoin que le type d'une variable change pendant l'exécution ?** La réponse courte est que vous ne pouvez pas, pas directement. En général, la librarie standard d'un langage intègre des méthodes pour convertir le type de la valeur d'une variable que vous devrez bien entendu stocker dans une autre variables. Par exemple :
+Tout au long de ce document, nous avons vu en quoi des langages à système de typage dynamique comme **JavaScript** et des langages à système de typage statique comme **C#** diffèrent. Nous avons également vu comment exploiter les systèmes de typage statique pour conserver un maximum de flexibilité malgré les contraintes imposées.
 
-```c#
-//  C#
-int number = 0;
-string numberString = number.ToString();
-```
+Dans les faits, nous ne pouvons pas dire que les langages à typage statique dominent le marché puisque **JavaScript** et **Python**, deux langages à typage dynamique, occupent les deux première place du classement dans le dernier rapport de [Redmonk](https://redmonk.com/sogrady/2024/09/12/language-rankings-6-24/) de juin 2024 et occupent également le top 10 du classement dans le dernier rapport de [TIOBE](https://www.tiobe.com/tiobe-index/) d'octobre 2024. 
 
-Une stratégie qui doit vous sembler familière. Toutefois, cette approche n'est pas possible pour les types définis par le développeur, sachant que chaque classe défini un nouveau type. Une approche commune qui s'intègre bien avec la programmation générique s'appelle **polymorphisme**. Nous exploitons déjà ses propriétés quand nous limitons le type de `T` à l'interface `INumber` dans les exemples précédents.
-
-### Polymorphisme
----
-
-La notion de polymorphisme ne vous est peut-être pas étrangère si vous avez une certaine expérience en programmation orientée objet puisque ce concept n'est pas exclusif aux langages à système de typage statique. Le polymorphisme peut être défini simplement comme le fait que deux classes partagent une même méthode dont les implémentations diffèrent.
-
-Dans un langage au typage dynamique comme **JavaScript**, le polymorphisme n'a pas vraiment d'application qui lui est propre puisque deux objets peuvent être utilisés de manière indifférenciée, au risque de rencontrer un `undefined`. En revanche, ce concept est fondamental dans les langages orientés objet au typage statique puisqu'il permet simuler un typage dynamique dans une version plus contrôlée.
-
-Pour produire cet effet, deux stratégies sont utilisées : l'**héritage** et la **composition**. Attention, l'héritage et la composition sont des concepts à part entière et ne réduisent pas au polymorphisme. En revanche, ces deux concepts peuvent être utilisés pour faire du polymorphisme.
-
-#### Polymorphisme à base d'héritage 
----
-
-Le polymorphisme à base d'héritage est l'exemple que vous trouverez le plus souvent dans la littérature. Pour l'accomplir, nous avons besoin d'une classe générale et d'au moins deux classes spécialisées.
-
-- [dotnet/PolymorphismeAvecHeritage](/dotnet/techtalk/TechTalk/PolymorphismeAvecHeritage.cs)
-
-Nous n'entrerons pas dans les détails de cette implémentation car notre but n'est pas de d'apprendre **C#**. Votre attention doit se porter uniquement sur les deux classes `Canard1` et `Chat1` qui héritent des attributs et des méthodes de la classe `Animal`. Dans cet exemple, la classe `Animal` n'a pas de valeur par défaut pour son attribut `species` et n'a pas d'implémentation par défaut pour sa méthode `Cri`, mais ça aurait pu être le cas.
-
-Le polymorphisme, dans cet exemple, est basé sur l'héritage en ce sens que les classes héritières `Canard1` et `Chat1` **sont** également des `Animal`(-aux) car elles en ont toutes les caractéristiques (attributs) et tous les comportements (méthodes), mais surtout parce qu'elles héritent également du type `Animal` associé à la classe éponyme. Bien entendu, `Canard1` et `Chat1` peuvent posséder des attributs et des méthodes qui leurs sont propres comme des ailes, une queue, la capacité de voler ou la capacité de voir dans le l'obscurité.
-
-Après toutes ces explications, vous vous demandez sans doute ce que tout celà à avoir avec le typage statique. Nous y arrivons. Admettons que nous développions une application pour détenteurs d'animaux de compagnie. Rien ne nous dit que les utilisateurs de notre application auront tous exactement un animal de compagnie, nous devons donc implémenter une liste. **Problème : comment créer une liste qui peut accueillir des animaux d'espèces différentes ?** 
-
-Pour résoudre ce problème, nous pouvons nous passer de nos classes `Canard1` et `Chat1` (et donc du polymorphisme), et donner la responsabilité de différencier chaque espèce d'animal à la classe générale `Animal`. Vous imaginez bien que cette approche est fastidieuse. En procédant ainsi, nous devrions préciser à chaque fois si oui ou non un animal à une queue, si oui ou non il peut voler, ... La quantité d'attributs et de méthodes serait ingérable.
-
-Plutôt que de nous compliquer la vie, [utilisons le système d'héritage à notre avantage](/dotnet/techtalk/TechTalk/Program.cs). Plus tôt dans le texte, nous avons évoqué le fait que chaque classe déclarée par le développeur déclare également un type. Autrement dit, chaque instance de la classe `Animal` est une variable de type `Animal`. Vous vous en doutez, quand une classe hérite d'une autre, elle hérite aussi de son type. En conséquence, les classes `Canard1` et `Chat1` sont respectivement de type `Canard1` et `Chat1` **et** de type `Animal`. La réciproque n'est pas vraie (un animal n'est pas un canard). Nous pouvons pousser la logique un cran plus loin et déclarer une variable de type `Animal` pour y assigner des instances de `Canard1` et de `Chat1` sans que celà ne pose de problème.
-
-Voilà, nous avons reproduit une forme de typage dynamique contrôlé dans un système de typage statique ! Toutefois, nous avons mentionné une autre façon de faire. Nous ne nous attarderons pas sur les raisons historiques qui justifient l'existence d'une seconde approche. Nous nous contenterons d'un simple exemple fictif pour illustrer un problème induit par cette première approche :
-
-```c#
-//  C#
-var animaux = new List<Animal>(new Canard(), new Chat(), new Moustique());
-foreach (Animal animal in animaux)
-{
-    animal.cri()
-    animal.voler();
-}
-```
-
-Comme vous le devinez, le code ci-dessus génère une erreur car la classe `Chat` ne possède pas de méthode `voler()`. Rien ne nous empêche d'insérer une classe `AnimauxVolants` dans la chaine d'héritage afin de séparer le `Canard` et le `Moustique` du `Chat`. Toutefois, cette approche peut causer d'autres problèmes propres à l'héritage que nous n'aborderons pas. C'est pour ça qu'il existe une seconde approche se reposant sur l'idée d'**avoir** des comportements en commun plutôt que d'**être** une entité plus globale. Cependant, avant de nous pencher sur cette seconde approche, explorons un exemple supplémentaire qui va nous permettre de faire le lien avec les génériques :
-
-- [dotnet/PolymorphismeAvecHeritageEtGenerique](/dotnet/techtalk/TechTalk/PolymorphismeAvecHeritageEtGenerique.cs)
-
-Dans cet exemple, nous construisons une méthode statique qui nous permet de faire aboyer un `Chien` indépendamment de sa race (`Golden_Retriever` ou `Rottweiler`), mais nous contraignons le type de l'paramètre `chien` à l'aide d'un générique :
-
-```c#
-//  C#
-class Trick
-{
-    public static void Aboyer<T>(T chien) where T : Chien
-    {
-        chien.Cri();
-    }
-}
-```
-
-Notez que, dans cet exemple, il serait tout à fait équivalent de définir la méthode `Aboyer<T>()` comme suit :
-
-```c#
-public static void Aboyer(Chien chien)
-```
-
-Toutefois, vous rencontrerez des situations où du polymorphisme avec et sans générique ne sont pas interchangeables.
-
-#### Polymorphisme à base de composition
----
-
-La seconde stratégie pour mettre en place du polymorphisme repose sur l'idée de composer une entité concrète à partir de comportements sans se soucier de ses caractéristiques. Afin de rendre cette approche plus simple, la majorité des langages de programmation orientée objet implémente une structure appelée **interface** (parfois trait).
-
-Une interface diffère d'une classe (abstraite ou non) sur trois points :
-
-- Une interface ne possède que des méthodes, aucun attribut.
-- Aucune des méthodes d'une interface ne possède d'implémentation.
-- Une interface ne peut pas être instanciée
-
-*En pratique, les deux premières règles ne sont pas toujours vraies. Beaucoup de langages implémentent une structure **classe abstraite** qui ne respecte que la dernière règle contrairement aux interfaces. En **C#**, bien que les interfaces et les classes abstraites existent, cette distinction ne se fait que par convention. En revanche, une classe ne peut hériter que d'une seule classe (abstraite) mais peut hériter de plusieurs interfaces.*
-
-Par essence, les interfaces s'inscrivent sans difficulté dans le paragidme de composition bien qu'elle s'intègrent également dans le paradigme d'héritage. D'ailleurs, seul un mot clef distingue le procédé qui consiste à transférer le contenu d'une classe ou d'une interface vers une autre classe dans la plus part des langages, quand ce mot clef n'est pas le même pour les deux. 
-
-Regardons comment construire notre exemple d'animaux avec des interfaces :
-
-- [dotnet/PolymorphismeAvecComposition](/dotnet/techtalk/TechTalk/PolymorphismeAvecComposition.cs)
-
-Avec cette approche, la seule chose qui lie `Canard2` et `Chat2` est leur capacité à `Crier()`, ce qui permet de manipuler des animaux d'espèces différentes de façon plus intuitive. En effet, avec l'[approche précédente](#polymorphisme-à-base-dhéritage) vous devez savoir quels animaux sont capables de voler ou de crier avant de les manipuler au sein d'une même liste. Il est évident qu'un `Chat` ne peut pas voler, mais vous rencontrerez des situations où ce n'est pas aussi évident de deviner les comportements (méthodes) partagés par un ensemble de classes qui possèdent un parent commun.
-
-En revanche, lorsque vous manipulez des classes qui partagent uniquement des comportements regroupés dans des interfaces, tout devient plus explicite pour vous comme pour le compilateur quand vous manipulez des objets de types différents :
-
-```c#
-var animauxAvecCri = new List<ICrier>(new Canard(), new Chat());
-foreach (ICrier animalAvecCri in animauxAvecCri)
-{
-    animalAvecCri.Cri();
-}
-```
-
-Cette stratégie s'intègre également plus intuitivement avec des types génériques que l'héritage. Nous ne nous atterderons pas sur un exemple puisque nous avons déjà vu comment utiliser l'interface numérique à la section dédiée à la [programmation générique](#programmation-générique).
-
-Dorénavant, vous avez toutes les cartes en main pour adopter un système de typage statique. Bien entendu, vous devrez pratiquer un peu avant d'assimiler chaque concept, en particulier la programmation générique. Avant de conclure, penchons nous sur un langage de programmation construit par dessus **JavaScript** : **TypeScript**.
-
-### TypeScript
----
-
-Nous avons déjà exploreé beaucoup de choses jusqu'à présent. Plutôt que de rallonger la lecture inutilement, rendez-vous sur le site de TypeScript pour en apprendre plus.
+Cependant, nous devons souligner l'intérêt grandissant des développeurs pour les systèmes de typage statique. A ce titre, **TypeScript** occupe une place remarquable dans le classement de Redmonk. Si vous avez lu ce document jusqu'au bout, il est fort probable que vous ne connaissez pas **TypeScript**. Nous n'entrerons pas dans les détails car nous en avons déjà discuté bien assez de sujets. Sachez juste que **TypeScript** est un superset de **JavaScript** qui permet d'écrire du code **JavasScript** statiquement typé puis de le compiler en code **JavaScript** classique. Toutes les informations sont sur le site officiel.
 
 - [TypeScript](https://www.typescriptlang.org/)
 
-Sachez juste que **TypeScript** n'a pas vocation à être interprété par votre environnement d'exécution (Node, Deno, Bun, ...), bien que certains puissent le faire. Dans un projet classique, **TypeScript** est utilisé pour développer en profitant des avantages du système de typage statique pour vous éviter un certain nombre d'erreurs. Ensuite, vous pouvez "compiler" (transpiler pour être exact) le code vers du **JavaScript** exécutable partout, y compris dans un navigateur.
-
-**TypeScript** s'intègre également très bien dans les frameworks **JavaScript** les plus connus comme **React**. De plus, nous citerons **Angular** en particulier qui est directement implémenté en **TypeScript**.
-
-## Conclusion
+Si vous voulez expérimenter les systèmes de typage statique sans devoir apprendre un autre langage, **TypeScript** est votre meilleure option. Vous ne devriez pas rencontrer trop de problèmes à migrer vers ce nouvel outil puisque **TypeScript** est déjà bien intégré dans les environnements d'exécution **Deno** et **Bun**, et l'intégration **Node** arrive à grand pas. Pareil pour les frameworks les plus populaires comme **React** et **Vue**. Mention spéciale à **Angular** qui est même écrit en **TypeScript**.
