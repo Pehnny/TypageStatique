@@ -1,13 +1,10 @@
+using System.Numerics;
+
 namespace TechTalk
 {
-    class Somme
+    class Arithmetique
     {
-        public static int SommeInt(int a, int b)
-        {
-            return a + b;
-        }
-
-        public static double SommeFloat(double a, double b)
+        public static T Somme<T>(T a, T b) where T : INumber<T>
         {
             return a + b;
         }

@@ -1,0 +1,1 @@
+D:\Geek\BeCode\TechTalk\rust\techtalk\target\debug\techtalk.exe: D:\Geek\BeCode\TechTalk\rust\techtalk\src\examples\somme.rs D:\Geek\BeCode\TechTalk\rust\techtalk\src\examples.rs D:\Geek\BeCode\TechTalk\rust\techtalk\src\main.rs

@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "somme": "node somme.js"
+    "start": "node main.mjs"
   },
   "author": "Théo Piron",
   "license": "ISC",
