@@ -19,7 +19,6 @@ class Example
 
             Console.WriteLine("");
         }
-
         //  Polymorphisme avec héritage
         {
             Console.WriteLine("Polymorphisme avec héritage");
@@ -45,7 +44,7 @@ class Example
 
             Console.WriteLine("");
         }
-
+        //  Programmation générique
         //  Mutation d'animaux
         {
             Console.WriteLine("Mutation d'animaux");
@@ -58,8 +57,6 @@ class Example
 
             Console.WriteLine("");
         }
-
-        //  Programmation générique
         //  Appel de la méthode Somme<T>()
         {
             Console.WriteLine("Appel de la méthode Somme<T>()");

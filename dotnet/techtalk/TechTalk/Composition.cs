@@ -7,8 +7,20 @@ namespace TechTalk
         public void Atterrir();
     }
 
-    class Pigeon(string espece = "pigeon") : Animal(espece), IVoler
+    interface ICrier
     {
+        public void Crier();
+    }
+
+    class Pigeon(string espece = "piegon") : ICrier, IVoler
+    {
+        private readonly string espece = espece;
+
+        public void Crier()
+        {
+            Console.WriteLine("Roucoule !");
+        }
+
         public void Atterrir()
         {
             Console.WriteLine("Se pose sur un batiment !");

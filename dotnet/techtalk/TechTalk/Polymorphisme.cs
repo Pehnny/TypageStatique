@@ -51,8 +51,8 @@ namespace TechTalk
         }
     }
 
-    //  Polymorphisme avec héritage d'une classe avec implémentation
-    class Chien(string race = "inconnue") : Animal("chien")
+    //  Polymorphisme avec héritage d'une classe abstraite qui possède des implémentations par défaut.
+    abstract class Chien(string race) : Animal("chien")
     {
         protected string race = race;
 
@@ -61,7 +61,7 @@ namespace TechTalk
             Console.WriteLine("Waf !");
         }
 
-        public virtual void DemanderRace()
+        public void DemanderRace()
         {
             Console.WriteLine(race);
         }
@@ -69,10 +69,7 @@ namespace TechTalk
 
     class Golden_Retriever : Chien
     {
-        public Golden_Retriever() : base("golden retriever") 
-        {
-            
-        }
+        public Golden_Retriever() : base("golden retriever") {}
     }
     class Rottweiler : Chien
     {
