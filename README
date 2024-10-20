@@ -1,6 +1,6 @@
 # Langages de programmation au typage statique
 
-Le présent repo s'addresse aux développeurs qui n'ont connu que des langages au typage dynamique comme **JavaScript** ou **Python**. L'objectif est de vous introduire aux langages dont le système de typage est statique. Nous illustrerons les concepts que nous aborderons à l'aide de 3 langages de programmation : **JavaScript**, **C#** et **Rust**. 
+Le présent repo s'addresse aux développeurs juniors qui n'ont connu que des langages dont le système de typage est dynamique comme **JavaScript** ou **Python**. L'objectif est de vous introduire aux langages dont le système de typage est *a contrario* statique. Nous illustrerons tous les concepts que nous aborderons avec 3 langages de programmation : **JavaScript**, **C#** et **Rust**. 
 
 - [Introduction](#introduction)
 - [Typage statique](#typage-statique)
@@ -13,7 +13,7 @@ Le présent repo s'addresse aux développeurs qui n'ont connu que des langages a
 
 ## Introduction
 
-Commençons en rappelant une évidence : Dans un système de typage dynamique, une variable peut changer de type à n'importe quel moment. Par exemple, vous pouvez assigner un nombre à une variable, puis changer sa valeur avec une chaine de caractère :
+Commençons par une évidence : Dans un système de typage dynamique, une variable peut changer de type à n'importe quel moment. Par exemple, nous pouvons assigner un nombre à une variable, puis changer sa valeur avec une chaine de caractère :
 
 ```js
 //  JavaScript
@@ -21,7 +21,7 @@ let variable = 1;
 variable = "text";
 ```
 
-Ce simple script ne génère aucune erreur. En revanche, si nous faisons la même chose dans un système de typage statique, nous rencontrons une erreur :
+En revanche, si nous faisons la même chose dans un système de typage statique, nous rencontrons une erreur :
 
 ```c#
 //  C#
@@ -38,41 +38,39 @@ int variable1 = 1;
 string variable2 = "text";
 ```
 
-La syntaxe `type <name>` pour déclarer une variable est considérée désuète aujourd'hui. Vous la trouverez en général dans des langages qui ont au moins 20 ans comme **C++**, **C#** ou **Java**. Les langages modernes comme **Kotlin** et **Rust** utilisent une syntaxe de la forme `keyword <name> : type` :
+La syntaxe `type <name>` pour déclarer une variable est considérée désuète aujourd'hui. Nous la trouverons généralement dans des langages qui ont au moins 20 ans comme **C++**, **C#** ou **Java**. Les langages modernes comme **Kotlin** et **Rust** utilisent une syntaxe de la forme `keyword <name> : type` :
 
 ```rust
 //  Rust
 let variable : i32 = 1;
 ```
 
-Cette syntaxe ne devrait pas vous éloigner de vos habitudes si vous êtes un développeur **JavaScript**. Cependant, nous pouvons faire encore mieux. Ces langages modernes sont capables d'inférer le type d'une variable en fonction de la valeur que nous lui assignons. Ainsi, nous pouvons simplifier le code précédent et laisser le langage assigner le bon type à la variable :
+Cette syntaxe se rapproche de celle des langages à typage dynamique comme **JavaScript**. Avec le temps, les système de typage statique ont acquis la capacité d'inférer le type d'une variable en fonction de la valeur que nous lui assignons. Nous pouvons donc simplifier le code précédent :
 
 ```rust
 //  Rust
 let variable = 1;
 ```
 
-Avec un tel niveau d'abstraction, il ne reste plus aucune différence entre la déclaration et l'assignation d'une variable dans un système de typage dynamique ou statique. Cependant, ce n'est pas toujours vrai. Il existe des situations où le contexte ne permet pas au langage d'inférer le type d'une variable. L'exemple précédent est simple et sans équivoque.
+Il ne reste plus aucune différence avec la syntaxe de `JavaScript`. Cependant, il existe des situations où le contexte ne permet pas au système d'inférer le type d'une variable.
 
-Pour conclure cette introduction, sachez que l'abstraction que nous venons de décrire parait tellement évident que les plus vieux langages comme **C#** et **Java** l'ont adopté. Ces deux langages ont opté pour le mot clef `var`. Malheureusement, quand le langage ne peut pas inférer le type d'une variable, nous devons utiliser la vieille syntaxe.
-
-Penchons nous maintenant sur les spécificités des systèmes de typage statique afin d'en tirer les avantages et les inconvénients.
+Pour conclure cette introduction, notons que les langages plus anciens comme **C#** et **Java** sont également capable d'inférer un type. Afin d'imiter la syntaxe moderne, ces deux langages utilisent le mot clef `var`. Malheureusement, quand le système ne peut pas inférer le type d'une variable, nous devons utiliser la vieille syntaxe. Penchons nous maintenant sur les spécificités des systèmes de typage statique afin d'en tirer les avantages et les inconvénients.
 
 ## Typage statique
 
-Dans l'[introduction](#introduction), nous avons vu comment un système de typage statique impact la déclaration et l'assignation de variables. Toutefois, cet exemple basique ne nous permet pas d'explorer les forces et les faiblesses de ces systèmes. Regardons comment déclarer des fonctions et des classes afin d'explorer les spécificités du typage statique. 
+Dans l'[introduction](#introduction), nous avons vu comment un système de typage statique impact la déclaration et l'assignation de variables. Toutefois, un exemple aussi basique ne nous permet pas de rendre nous compte de toutes les implications de ces systèmes. Regardons comment déclarer des fonctions et des classes afin d'explorer les spécificités du typage statique plus en profondeur. 
 
 ### Fonctions et classes
 ---
 
 Commençons par regarder comment construire une fonction qui additionne 2 nombres entiers en **JavaScript** et en **Rust**.
 
-- [javascript/somme](./javascript/somme.js)
-- [rust/somme](./rust/techtalk/src/examples/somme.rs)
+- [javascript/somme](/javascript/somme.mjs)
+- [rust/somme](/rust/techtalk/src/somme/mod.rs)
 
-Dans l'exemple écrit en **Rust**, le type des paramètres `a` et `b`, ainsi que le type de retour de la fonction `somme()`, sont précisés. Contrairement aux variables, ces précisions sont obligatoires pour une fonction car le langage ne peut pas deviner son usage puisque nous ne pouvons pas appeler une fonction au même moment que nous la déclarons (exception faite des fonctions anonymes que nous n'aborderons pas). De plus, dans cet exemple, chaque paramètre d'entrée et de sortie de la fonction `somme()` sont de même type (`i32`), mais ils auraient pu avoir des types différents si c'était nécessaire.
+Dans l'exemple écrit en **Rust**, le type des paramètres `a` et `b`, ainsi que le type de retour de la fonction `somme()`, sont précisés. Contrairement aux variables, ces précisions sont obligatoires car le système ne peut pas inférer le type de ces paramètres avant que nous appelons la fonction et nous n'appelons pas une fonction lorsque nous la déclarons (exception faite des fonctions anonymes que nous n'aborderons pas). De plus, chaque paramètre d'entrée et de sortie de la fonction `somme()` sont de même type (`i32`), c'est évidemment fortuit.
 
-Une fois que nous avons attribué un type à chaque paramètre de la fonction (y compris le retour), nous somme contraint de respecter son typage lorsque nous l'appelons. Ce n'est pas vrai dans un système de typage dynamique puisqu'il n'y a aucune contrainte sur les paramètres d'une fonction. Par exemple, bien que la fonction `somme()` écrite en **JavaScript** soit prévue pour additionner des nombres, rien ne nous empêche de l'[utiliser](/javascript/main.mjs) pour concaténer deux chaines de caractères :
+Une fois que nous avons attribué un type à chaque paramètre de la fonction (y compris le retour), nous somme contraint de respecter ce typage lorsque nous l'[appelons](/rust/techtalk/src/main.rs). Ce n'est pas vrai dans un système de typage dynamique. Par exemple, bien que la fonction `somme()` écrite en **JavaScript** soit prévue pour additionner des nombres, rien ne nous empêche de l'[utiliser](/javascript/main.mjs) pour concaténer deux chaines de caractères :
 
 ```js
 //  JS
@@ -89,7 +87,7 @@ Tout ce que nous venons de dire est également vrai pour une classe, ses attribu
 
 - [dotnet/Exemple](/dotnet/techtalk/TechTalk/Exemple.cs)
 
-Lorsque nous déclarons une classe, nous devons préciser le type de chacun de ses attributs. En conséquence, nous devons respecter le type de ces attributs lorsque nous instancions la classe `Exemple`. Le code suivant ne génère une erreur :
+Lorsque nous déclarons une classe, nous devons préciser le type de chacun de ses attributs. En conséquence, nous devons respecter le type de ces attributs lorsque nous instancions la classe `Exemple`. Le code suivant génère une erreur :
 
 ```c#
 //  C#
@@ -99,9 +97,9 @@ var exemple = new Exemple(0, false);
 
 Parlons à présent des avantages et des inconvénients des système de typage statique. Tout d'abord, comparé à un système de typage dynamique, le typage statique est contraignant comme nous l'avons vu avec la fonction `somme()`. En contrepartie, cette contrainte prévient un ensemble d'erreurs qui, en **JavaScript**, se manifestent par l'apparition de valeurs `undefined` un peu partout. A titre d'exemple, cette erreur se produit quand nous essayons d'utiliser la méthode `map()` sur une variable de type `String`. Les systèmes de typage statique préviennent ce genre d'erreur. Toutefois, ces systèmes ne sont pas infaillibles. Ils ne peuvent pas prévenir une erreur de type si une valeur n'est connue qu'au moment de l'exécution, comme lorsqu'un client communique avec un serveur.
 
-Un autre avantage des systèmes de typage statique prend place dans les IDE. Puisque que nous pouvons connaitre le type de chaque variable ou les types attendus dans une fonction à chaque instant, notre IDE le peut aussi. En conséquence, les IDE utilisent ces informations pour proposer de l'autocomplétion de code et de la détection d'erreur. L'outil qui permet de faire ça s'appelle **IntelliSense**.
+Un autre avantage des systèmes de typage statique prend place dans les IDE. Puisque que le système peut connaitre le type de chaque variable ou les types attendus dans une fonction à chaque instant, notre IDE le peut aussi. En conséquence, les IDE utilisent ces informations pour proposer de l'autocomplétion de code et de la détection d'erreur. L'outil qui permet de faire ça s'appelle **IntelliSense**.
 
-Revenons une dernière fois sur la contrainte de notre fonction `somme()` écrite en **Rust** avec un questionnement légitime : **Que devons-nous faire si nous voulons que notre fonction `somme()` accepte des nombres réels (à virgule) ou des chaines de caractères en paramètre  comme en **JavaScript** ? Devons-vous écrire une autre version de cette fonction pour chaque type existant ?** A une époque pas si lointaine, c'est effectivement ce que nous aurions dû faire. Heureusement, des outils permettent de reproduire la flexibilité du typage dynamique au sein des systèmes de typage statique mais avec plus de contrôle : l'**héritage**, **polymorphisme** et la **programmation générique**. Chacun de ces concepts à des applications différentes et complémentaires qui ne se cantonnent pas au typage. De plus, ces concepts sont intimement liés.
+Revenons une dernière fois sur la contrainte de notre fonction `somme()` écrite en **Rust** avec un questionnement légitime : **Que devons-nous faire si nous voulons que notre fonction `somme()` accepte des nombres décimaux ou des chaines de caractères en paramètre  comme en **JavaScript** ? Devons-vous écrire une autre version de cette fonction pour chaque type existant ?** A une époque pas si lointaine, c'est effectivement ce que nous aurions dû faire. Heureusement, des outils permettent de reproduire la flexibilité du typage dynamique au sein des systèmes de typage statique mais avec plus de contrôle : l'**héritage**, **polymorphisme** et la **programmation générique**. Chacun de ces concepts à des applications différentes et complémentaires qui ne se cantonnent pas au typage.
 
 Nous illustrerons toutes ces approches en **C#** car ce langage incorpore aussi bien les vieux outils qui permettent de mettre en place ces stratégies que les nouveaux.
 
