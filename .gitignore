@@ -1,5 +1,6 @@
 # dotnet
-dotnet/**/Debug
+dotnet/**/bin
+dotnet/**/obj
 
 # javascript
 javascript/**/node_modules
