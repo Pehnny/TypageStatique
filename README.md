@@ -23,7 +23,7 @@ variable = "text";
 
 En revanche, si nous faisons la même chose dans un système de typage statique, nous rencontrons une erreur :
 
-```c#
+```cs
 //  C#
 int variable = 1;
 variable = "text";
@@ -32,7 +32,7 @@ variable = "text";
 
 Profitons de la simplicité de cet exemple pour remarquer que, dans un système de typage statique, nous devons déclarer le type que nous voulons associer à une variable. En l'occurence, `variable` est de type `int`, un nombre entier. Afin d'assigner la chaine de caractère `"text"` à une variable, nous sommes obligé d'en déclarer une autre :
 
-```c#
+```cs
 //  C#
 int variable1 = 1;
 string variable2 = "text";
@@ -89,7 +89,7 @@ Tout ce que nous venons de dire est également vrai pour une classe, ses attribu
 
 Lorsque nous déclarons une classe, nous devons préciser le type de chacun de ses attributs. En conséquence, nous devons respecter le type de ces attributs lorsque nous instancions la classe `Exemple`. Le code suivant génère une erreur :
 
-```c#
+```cs
 //  C#
 var exemple = new Exemple(0, false);
 //  Argument 1: cannot convert from 'int' to 'string'
@@ -177,7 +177,7 @@ Dans cet exemple, nous définissons un **type générique** `T`. Nous pouvons in
 
 Attardons nous sur la déclation de notre méthode générique et regardons de plus près le rôle de chaque `T` : 
 
-```c#
+```cs
 //  C#
 public static T Somme<T>(T a, T b) where T : INumber<T>
               1       2  3    4          5           6
@@ -187,7 +187,7 @@ De toutes les apparitions de `T`, la plus importante est la numéro 2. La syntax
 
 Avant de nous attarder sur les deux dernières occurences de `T`, regardons déjà de comment utiliser cette méthode générique. Lorsque nous appelons la méthode `Somme<T>()`, nous devons passer un type en entrée, en plus des valeurs habituelles :
 
-```c#
+```cs
 //  C#
 int sommeEntier = Arithmetique.Somme<int>(2, 3);
 double sommeReel = Arithmetique.Somme<double>(0.2, 0.3);
@@ -197,7 +197,7 @@ Cette approche est différente du polymorphisme par héritage parce que même si
 
 Illustrons cette propriété avec un autre exemple. Admettons que pour des raisons techniques, nous devons convertir tous les types numériques qui entrent dans la méthode `Somme<T>()` en type `double`. Nous ne pouvons pas le faire directement sur les paramètres de la fonction :
 
-```c#
+```cs
 public static T Somme<T>(T a, T b) where T : INumber<T>
 {
     a = Convert.ToDouble(a);
@@ -208,7 +208,7 @@ public static T Somme<T>(T a, T b) where T : INumber<T>
 
 C'est la même erreur que nous avons rencontré dans l'[introduction](#introduction). Pour accomplir cette conversion, nous devons déclarer des nouvelles variables et ajuster la signature de la fonction :
 
-```c#
+```cs
 //  C#
 public static double Somme<T>(T a, T b) where T : INumber<T>
 {
@@ -220,7 +220,7 @@ public static double Somme<T>(T a, T b) where T : INumber<T>
 
 Profitons de cet exemple pour revenir à la dernière partie de la déclaration de notre méthode :
 
-```c#
+```cs
 //  C#
 where T : INumber<T>
 ```
@@ -229,7 +229,7 @@ Sans cette partie là, nous rencontrerions une autre erreur au moment où nous c
 
 Revenons à présent sur les deux appels de la méthode `Somme<T>()`. Dans ces exemples, nous avons déclaré explicitement le type de chaque variable et du générique passé à la méthode. Nous l'avons écrit ainsi pour mieux illustrer ce qu'il se passe. Toutefois, le système peut également inférer des types génériques à partir des valeurs passées à la méthode. Nous pouvons donc simplifier les appels précédents :
 
-```c#
+```cs
 //  C#
 var sommeEntier = Arithmetique.Somme(2, 3);
 var sommeReel = Arithmetique.Somme(0.2, 0.3);
@@ -247,7 +247,7 @@ Concluons sur la programmation générique avec quelques exemples supplémentair
 
 Dans cet exemple, nous définissons une classe générique `Cage<T>` dont la méthode `CapturerAutreChien<U>()` est également générique. Attardons un peu plus sur ce que fait cette méthode :
 
-```c#
+```cs
 public void CapturerAutreChien<U>(U chien) where U : T
 {
     if (!plein)
@@ -265,7 +265,7 @@ Cette méthode prend un chien de type `U` restreint au type `T`, lui-même restr
 
 Cet exemple nous permet d'illustrer que les deux stratégies de polymorphisme que nous avons vu sont compatibles. Regardons un dernier. Jusqu'à présent nous n'avons traité que des cas à un seul générique par soucis de simplicité. Bien entendu, nous pouvons définir autant de paramètre générique que nous en avons besoin. Nous pouvons également les mélanger à des types concrets :
 
-```c#
+```cs
 //  C#
 class Example
 {
