@@ -1,1 +1,8 @@
+# dotnet
+dotnet/**/Debug
 
+# javascript
+javascript/**/node_modules
+
+# rust
+rust/**/target
