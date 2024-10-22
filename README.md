@@ -99,7 +99,7 @@ Parlons à présent des avantages et des inconvénients des système de typage s
 
 Un autre avantage des systèmes de typage statique prend place dans les IDE. Puisque que le système peut connaitre le type de chaque variable ou les types attendus dans une fonction à chaque instant, notre IDE le peut aussi. En conséquence, les IDE utilisent ces informations pour proposer de l'autocomplétion de code et de la détection d'erreur. L'outil qui permet de faire ça s'appelle **IntelliSense**.
 
-Revenons une dernière fois sur la contrainte de notre fonction `somme()` écrite en **Rust** avec un questionnement légitime : **Que devons-nous faire si nous voulons que notre fonction `somme()` accepte des nombres décimaux ou des chaines de caractères en paramètre  comme en **JavaScript** ? Devons-vous écrire une autre version de cette fonction pour chaque type existant ?** A une époque pas si lointaine, c'est effectivement ce que nous aurions dû faire. Heureusement, des outils permettent de reproduire la flexibilité du typage dynamique au sein des systèmes de typage statique mais avec plus de contrôle : l'**héritage**, **polymorphisme** et la **programmation générique**. Chacun de ces concepts à des applications différentes et complémentaires qui ne se cantonnent pas au typage.
+Revenons une dernière fois sur la contrainte de notre fonction `somme()` écrite en **Rust** avec un questionnement légitime : **Que devons-nous faire si nous voulons que notre fonction `somme()` accepte des nombres décimaux ou des chaines de caractères en paramètre  comme en JavaScript ? Devons-vous écrire une autre version de cette fonction pour chaque type existant ?** A une époque pas si lointaine, c'est effectivement ce que nous aurions dû faire. Heureusement, des outils permettent de reproduire la flexibilité du typage dynamique au sein des systèmes de typage statique mais avec plus de contrôle : l'**héritage**, **polymorphisme** et la **programmation générique**. Chacun de ces concepts à des applications différentes et complémentaires qui ne se cantonnent pas au typage.
 
 Nous illustrerons toutes ces approches en **C#** car ce langage incorpore aussi bien les vieux outils qui permettent de mettre en place ces stratégies que les nouveaux.
 
@@ -169,7 +169,7 @@ En effet, une conséquence du polymorphisme par héritage est que des classes h�
 
 C'est cette problématique à laquelle répond la programmation générique. Elle permet la flexibilité que nous cherchons à produire, c'est-à-dire utiliser un `Canard` et un `Chat` avec une même fonction ou méthode tout en assurant l'**immutabilité de type**. Plongeons nous directement dans un exemple en reprenant la fonction `somme()` de l'[introduction](#introduction) que nous adapterons en une méthode statique puisque les fonctions n'existent pas en **C#** :
 
-- [dotnet/Somme](./dotnet/techtalk/TechTalk/Somme.cs)
+- [dotnet/Somme](/dotnet/techtalk/TechTalk/Somme.cs)
 
 Dans cet exemple, nous définissons un **type générique** `T`. Nous pouvons interpréter ce générique comme une "variable de type" dont le nom est "T" et que nous passons à la méthode `Somme<T>()`. Cette méthode est appelée méthode générique (même chose pour une classe ou une fonction) de paramètre générique `T`. Ce paramètre générique `T` peut être utilisé de manière analogue aux paramètres de valeur `a` et `b` dans le contexte de la méthode.
 
@@ -267,7 +267,7 @@ Cet exemple nous permet d'illustrer que les deux stratégies de polymorphisme qu
 
 ```cs
 //  C#
-class Example
+class Exemple
 {
     public static void ExempleMethode<T, U, V>(T arg1, U arg2, V arg3, int arg4, string arg5) 
     where T : ICrier, IVoler

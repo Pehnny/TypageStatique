@@ -2,7 +2,7 @@ import { somme } from "./somme.mjs"
 
 function main()
 {
-    //  Somme de nombres
+    //  Fonction somme()
     let result1 = somme(2, 3)
     console.log(result1)
 
