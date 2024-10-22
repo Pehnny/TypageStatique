@@ -8,7 +8,7 @@ variable = "text";
 ```
 2) **Déclaration de variable en C#**
 
-*Invalide*
+*Invalide* :
 ```cs
 //  C#
 int variable = 1;
@@ -16,7 +16,7 @@ variable = "text";
 //  error CS0029: Impossible de convertir implicitement le type 'string' en 'int'
 ```
 
-*Valide*
+*Valide* :
 ```cs
 //  C#
 int variable1 = 1;
@@ -25,13 +25,13 @@ string variable2 = "text";
 
 3) **Déclaration de variable en Rust**
 
-*Sans inférence de type*
+*Sans inférence de type* :
 ```rust
 //  Rust
 let variable : i32 = 1;
 ```
 
-*Avec inférence de type*
+*Avec inférence de type* :
 ```rust
 //  Rust
 let variable = 1;
@@ -45,7 +45,7 @@ let variable = 1;
     - [javascript/somme](/javascript/somme.mjs)
     - [rust/somme](/rust/techtalk/src/somme/mod.rs)
 
-2) **Utilisation des fonction `somme()`**
+2) **Utilisation des fonctions `somme()`**
     - [javascript/main](/javascript/main.mjs)
     - [rust/main](/rust/techtalk/src/main.rs)
 
@@ -56,9 +56,8 @@ let variable = 1;
     - Immutabilité (prévient des erreurs)
     - IntelliSense (autocomplétion)
 
-5) **Questions**
+5) **Question**
     - **Que devons-nous faire si nous voulons que notre fonction `somme()` accepte des nombres décimaux ou des chaines de caractères en paramètre  comme en JavaScript ?**
-    - **Devons-vous écrire une autre version de cette fonction pour chaque type existant ?**
     
 ## [Héritage et polymorphisme](/README.md#héritage-et-polymorphisme)
 
@@ -105,7 +104,7 @@ class Exemple
 }
 ```
 
-# Conclusion
+# [Conclusion](/README.md#conclusion)
 
 1) [Redmonk](https://redmonk.com/sogrady/2024/09/12/language-rankings-6-24/)
 

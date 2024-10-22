@@ -83,7 +83,7 @@ En revanche, si nous essayons d'appeler la fonction `somme()` écrite en **Rust*
 error[E0308]: arguments to this function are incorrect
 ```
 
-Tout ce que nous venons de dire est également vrai pour une classe, ses attributs et ses méthodes. Pour illustrer, définissons une classe simple, en **C#**, qui possède deux attributs, `name` et `valid` :
+Tout ce que nous venons de dire est également vrai pour une classe, ses attributs et ses méthodes. Pour illustrer, définissons une classe simple, en **C#**, qui possède deux attributs, `nom` et `valide` :
 
 - [dotnet/Exemple](/dotnet/techtalk/TechTalk/Exemple.cs)
 
@@ -258,9 +258,9 @@ public void CapturerAutreChien<U>(U chien) where U : T
 }
 ```
 
-Cette méthode prend un chien de type `U` restreint au type `T`, lui-même restreint au type `Chien`, en entrée. Lorsque nous instançons la classe `Cage<T>`, nous fixons le type de chien que la cage peut accueillir. Donc, si nous choisissons d'instancier une `Cage` sur un `Golden_Retriever`, nous ne pourrons plus capturer que des `Golden_Retriever`. Si nous voulons mettre un `Rottweiller`  en cage, deux options s'offrent à nous :
+Cette méthode prend un chien de type `U` restreint au type `T`, lui-même restreint au type `Chien`, en entrée. Lorsque nous instançons la classe `Cage<T>`, nous fixons le type de chien que la cage peut accueillir. Donc, si nous choisissons d'instancier une `Cage` sur un `Golden_Retriever`, nous ne pourrons plus capturer que des `Golden_Retriever`. Si nous voulons mettre un `Rottweiler` en cage, deux options s'offrent à nous :
 
-1) Créer une nouvelle instance de `Cage<T>` sur le type `Rottweiller`.
+1) Créer une nouvelle instance de `Cage<T>` sur le type `Rottweiler`.
 2) Assigner un type plus large à notre instance de `Cage<T>`, comme `Chien`.
 
 Cet exemple nous permet d'illustrer que les deux stratégies de polymorphisme que nous avons vu sont compatibles. Regardons un dernier. Jusqu'à présent nous n'avons traité que des cas à un seul générique par soucis de simplicité. Bien entendu, nous pouvons définir autant de paramètre générique que nous en avons besoin. Nous pouvons également les mélanger à des types concrets :

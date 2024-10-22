@@ -1,6 +1,6 @@
 namespace TechTalk
 {
-    //  Polymorphisme avec héritage d'une classe et composition d'une interface.
+    //  Composition d'interfaces
     interface IVoler
     {
         public void Voler();
@@ -12,6 +12,7 @@ namespace TechTalk
         public void Crier();
     }
 
+    //  Polymorphisme avec composition de deux interfaces.
     class Pigeon(string espece = "piegon") : ICrier, IVoler
     {
         private readonly string espece = espece;
@@ -32,6 +33,7 @@ namespace TechTalk
         }
     }
 
+    //  Polymorphisme avec héritage d'une classe et composition d'une interface.
     class Avion(int roues) : Vehicule(roues), IVoler
     {
         public override void Demarrer()

@@ -24,19 +24,19 @@ class Program
             Console.WriteLine("Polymorphisme avec héritage");
             Console.WriteLine("--------------------------");
             
-            var animaux = new List<Animal>{new Canard(), new Chat()};
+            Animal[] animaux = [new Canard(), new Chat()];
             foreach (var animal in animaux)
             {
                 animal.Cri();
             }
 
-            var vehicules = new List<Vehicule>{new Voiture(), new Moto()};
+            Vehicule[] vehicules = [new Voiture(), new Moto()];
             foreach (var vehicule in vehicules)
             {
                 vehicule.Demarrer();
             }
 
-            var chiens = new List<Chien>{new Golden_Retriever(), new Rottweiler()};
+            Chien[] chiens = [new Golden_Retriever(), new Rottweiler()];
             foreach (var chien in chiens)
             {
                 chien.DemanderRace();

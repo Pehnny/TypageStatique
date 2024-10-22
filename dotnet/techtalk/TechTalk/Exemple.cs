@@ -3,48 +3,48 @@ namespace TechTalk
     //  Exemple de déclaration d'une classe avec une syntaxe complète et explicite
     class Exemple
     {
-        private string name;
-        private bool valid;
+        private string nom;
+        private bool valide;
 
         //  Constructeur
-        public Exemple(string name, bool valid)
+        public Exemple(string nom, bool valide)
         {
-            this.name = name;
-            this.valid = valid;
+            this.nom = nom;
+            this.valide = valide;
         }
 
         //  Méthode d'instance sans argument ni retour
         public void ExempleMethode()
         {
-            if (this.valid)
+            if (this.valide)
             {
-                Console.WriteLine(this.name);
+                Console.WriteLine(this.nom);
                 return;
             }
 
-            this.name = "";
-            this.valid = false;
+            this.nom = "";
+            this.valide = false;
         }
     }
 
     //  A titre indicatif pour ceux intéressés par C#
     //  Exemple de déclaration de la même classe avec une syntaxe moderne et concise
-    class ExempleModerne(string name, bool valid)
+    class ExempleModerne(string nom, bool valide)
     {
-        private string name = name;
-        private bool valid = valid;
+        private string nom = nom;
+        private bool valide = valide;
 
         //  Méthode d'instance sans argument ni retour
         public void ExempleMethode()
         {
-            if (valid)
+            if (valide)
             {
-                Console.WriteLine(name);
+                Console.WriteLine(nom);
                 return;
             }
 
-            name = "";
-            valid = false;
+            nom = "";
+            valide = false;
         }
     }
 }
