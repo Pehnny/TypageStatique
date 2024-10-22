@@ -258,7 +258,7 @@ public void CapturerAutreChien<U>(U chien) where U : T
 }
 ```
 
-Cette méthode prend un chien de type `U` restreint au type `T`, lui-même restreint au type `Chien`, en entrée. Lorsque nous instançons la classe `Cage<T>`, nous fixons le type de chien que la cage peut accueillir. Donc, si nous choisissons d'instancier une `Cage` sur un `Golden_Retriever`, nous ne pourrons plus capturer que des `Golden_Retriever`. Si nous voulons mettre un `Rottweiler` en cage, deux options s'offrent à nous :
+Cette méthode prend un chien de type `U` restreint au type `T`, lui-même restreint au type `Chien`, en entrée. Lorsque nous instançons la classe `Cage<T>`, nous fixons le type de chien que la cage peut accueillir. Donc, si nous choisissons d'instancier une `Cage<T>` sur un `Golden_Retriever`, nous ne pourrons plus capturer que des `Golden_Retriever`. Si nous voulons mettre un `Rottweiler` en cage, deux options s'offrent à nous :
 
 1) Créer une nouvelle instance de `Cage<T>` sur le type `Rottweiler`.
 2) Assigner un type plus large à notre instance de `Cage<T>`, comme `Chien`.
