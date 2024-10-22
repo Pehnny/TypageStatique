@@ -68,7 +68,7 @@ Commençons par regarder comment construire une fonction qui additionne 2 nombre
 - [javascript/somme](/javascript/somme.mjs)
 - [rust/somme](/rust/techtalk/src/somme/mod.rs)
 
-Dans l'exemple écrit en **Rust**, le type des paramètres `a` et `b`, ainsi que le type de retour de la fonction `somme()`, sont précisés. Contrairement aux variables, ces précisions sont obligatoires car le système ne peut pas inférer le type de ces paramètres avant que nous appelons la fonction et nous n'appelons pas une fonction lorsque nous la déclarons (exception faite des fonctions anonymes que nous n'aborderons pas). De plus, chaque paramètre d'entrée et de sortie de la fonction `somme()` sont de même type (`i32`), c'est évidemment fortuit.
+Dans l'exemple écrit en **Rust**, le type des paramètres `a` et `b`, ainsi que le type de retour de la fonction `somme()`, sont précisés. Contrairement aux variables, ces précisions sont obligatoires car le système ne peut pas inférer le type de ces paramètres avant que nous appelons la fonction et nous n'appelons pas une fonction lorsque nous la déclarons (exception faite des fonctions anonymes que nous n'aborderons pas). De plus, chaque paramètre d'entrée et de sortie de la fonction `somme()` sont de même type (`i32`). C'est évidemment fortuit.
 
 Une fois que nous avons attribué un type à chaque paramètre de la fonction (y compris le retour), nous somme contraint de respecter ce typage lorsque nous l'[appelons](/rust/techtalk/src/main.rs). Ce n'est pas vrai dans un système de typage dynamique. Par exemple, bien que la fonction `somme()` écrite en **JavaScript** soit prévue pour additionner des nombres, rien ne nous empêche de l'[utiliser](/javascript/main.mjs) pour concaténer deux chaines de caractères :
 
