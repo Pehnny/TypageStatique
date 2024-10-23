@@ -108,6 +108,12 @@ class Exemple
 
 1) [Redmonk](https://redmonk.com/sogrady/2024/09/12/language-rankings-6-24/)
 
+<!-- La syntaxe =1000x nécessite l'extension VSCode bierner.markdown-image-size -->
+![Classement de popularité Redmonk juin 2024](/Images/redmonk_2024-06.png =1000x)
+
 2) [TIOBE](https://www.tiobe.com/tiobe-index/)
+
+<!-- La syntaxe =1000x nécessite l'extension VSCode bierner.markdown-image-size -->
+![Classement de popularité TIOBE octobre 2024](/Images/tiobe_2024-10.png =1000x)
 
 3) [TypeScript](https://www.typescriptlang.org/)
