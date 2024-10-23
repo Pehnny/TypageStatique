@@ -167,7 +167,7 @@ La programmation générique, parfois aussi appelée polymorphisme de type, est 
 
 En effet, une conséquence du polymorphisme par héritage est que des classes héritières `B` et `C` d'une même classe `A` sont interchangeables. Nous avons écrit un [exemple](/dotnet/techtalk/TechTalk/Program.cs) avec une variable de type `Animal` à laquelle nous assignons un `Canard` avant de changer la valeur par un `Chat`. Bien que cet exemple ne pose pas de problème, la mutabilité de type peut générer des erreurs quand deux classe qui ont un ancêtre commun ont des méthodes qui leurs sont propres. Par exemple, un `Canard` pourrait a la capacité de voler mais un `Chat` pas. Si nous mélangeons des canards et des chats comme nous l'avons fait et que nous appelons la méthode `Voler()` sur tous les animaux de la liste, nous rencontrerons une erreur.
 
-C'est cette problématique à laquelle répond la programmation générique. Elle permet la flexibilité que nous cherchons à produire, c'est-à-dire utiliser un `Canard` et un `Chat` avec une même fonction ou méthode tout en assurant l'**immutabilité de type**. Plongeons nous directement dans un exemple en reprenant la fonction `somme()` de l'[introduction](#introduction) que nous adapterons en une méthode statique puisque les fonctions n'existent pas en **C#** :
+C'est cette problématique à laquelle répond la programmation générique. Elle permet la flexibilité que nous cherchons à reproduire, c'est-à-dire utiliser un `Canard` et un `Chat` avec une même fonction ou méthode tout en assurant l'**immutabilité de type**. Plongeons nous directement dans un exemple en reprenant la fonction `somme()` de l'[introduction](#introduction) que nous adapterons en une méthode statique puisque les fonctions n'existent pas en **C#** :
 
 - [dotnet/Somme](/dotnet/techtalk/TechTalk/Somme.cs)
 
@@ -195,7 +195,7 @@ double sommeReel = Arithmetique.Somme<double>(0.2, 0.3);
 
 Cette approche est différente du polymorphisme par héritage parce que même si `T` peut prendre n'importe quel type concret, une fois que nous lui avons assigné un type il ne peut plus en changer durant l'appel en cours. Dans cet exemple, nous appelons d'abord `Somme<T>()` avec le paramètre `int`. Une fois que nous avons appelé `Somme<int>()`,  il ne nous est plus possible de traiter `T` autrement que comme un nombre entier jusqu'à l'appel suivant. Nous ne pouvons donc pas passer un nombre décimal comme à la ligne suivante. La différencre fondamentale entre le polymorphisme de type et le polymorphisme par héritage sur cette immutabilité.
 
-Illustrons cette propriété avec un autre exemple. Admettons que pour des raisons techniques, nous devons convertir tous les types numériques qui entrent dans la méthode `Somme<T>()` en type `double`. Nous ne pouvons pas le faire directement sur les paramètres de la fonction :
+Illustrons cette propriété avec un autre exemple. Admettons que pour des raisons techniques, nous devons convertir tous les types numériques qui entrent dans la méthode `Somme<T>()` en type `double`. Nous ne pouvons pas le faire directement sur les paramètres de la méthode :
 
 ```cs
 public static T Somme<T>(T a, T b) where T : INumber<T>
@@ -206,7 +206,7 @@ public static T Somme<T>(T a, T b) where T : INumber<T>
 // error CS0029: Impossible de convertir implicitement le type 'double' en 'T'
 ```
 
-C'est la même erreur que nous avons rencontré dans l'[introduction](#introduction). Pour accomplir cette conversion, nous devons déclarer des nouvelles variables et ajuster la signature de la fonction :
+C'est la même erreur que nous avons rencontré dans l'[introduction](#introduction). Pour accomplir cette conversion, nous devons déclarer des nouvelles variables et ajuster la signature de la méthode :
 
 ```cs
 //  C#
